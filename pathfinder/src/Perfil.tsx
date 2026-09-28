@@ -3,6 +3,30 @@ import { useState } from 'react'
 export default function Perfil() {
   const [fileName, setFileName] = useState('')
   const [synced, setSynced] = useState(false)
+  const [fileError, setFileError] = useState('')
+
+  function handleFileChange(file: File | undefined) {
+    setSynced(false)
+    setFileName('')
+    setFileError('')
+    if (!file) return
+    if (!file.name.toLowerCase().endsWith('.json')) {
+      setFileError('Selecione um ficheiro com extensão .json.')
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onload = () => {
+      try {
+        JSON.parse(String(reader.result))
+        setFileName(file.name)
+      } catch {
+        setFileError('O ficheiro selecionado não contém um JSON válido.')
+      }
+    }
+    reader.onerror = () => setFileError('Não foi possível ler o ficheiro selecionado.')
+    reader.readAsText(file)
+  }
 
   return (
     <section className="min-h-[calc(100vh-81px)] px-6 py-8 md:px-10 md:py-12">
@@ -25,8 +49,9 @@ export default function Perfil() {
             <span className="mb-3 text-3xl text-blue-600" aria-hidden="true">↑</span>
             <span className="font-semibold text-slate-700">Clique ou arraste o ficheiro JSON do SIGAA</span>
             <span className="mt-2 text-sm text-slate-500">{fileName || 'Apenas ficheiros .json'}</span>
-            <input accept=".json,application/json" className="sr-only" id="sigaa-file" type="file" onChange={(event) => { setFileName(event.target.files?.[0]?.name || ''); setSynced(false) }} />
+            <input accept=".json,application/json" className="sr-only" id="sigaa-file" type="file" onChange={(event) => handleFileChange(event.target.files?.[0])} />
           </label>
+          {fileError && <p className="mt-2 text-sm text-red-600" role="alert">{fileError}</p>}
           <button className="mt-4 w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300" type="button" disabled={!fileName} onClick={() => setSynced(true)}>
             Sincronizar Dados
           </button>

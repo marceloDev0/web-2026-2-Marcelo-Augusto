@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom'
+
 const savedPlans = [
   { title: 'Plano Formatura 2026', edited: 'Editado hoje', progress: '65%' },
   { title: 'Percurso de Mobilidade', edited: 'Editado há 2 dias', progress: '42%' },
@@ -5,6 +7,8 @@ const savedPlans = [
 ]
 
 export default function Dashboard() {
+  const navigate = useNavigate()
+
   return (
     <section className="relative min-h-[calc(100vh-81px)] px-6 py-8 md:px-10 md:py-12">
       <div className="mb-10 bg-slate-50 p-6 md:p-8">
@@ -30,7 +34,7 @@ export default function Dashboard() {
           <p className="text-sm text-slate-500">Continue de onde parou</p>
           <h2 className="mt-1 text-2xl font-bold text-slate-900">Meus Planejamentos Salvos</h2>
         </div>
-        <button className="hidden rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 md:block" type="button">
+        <button className="hidden rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 md:block" type="button" onClick={() => navigate('/simulador')}>
           + Criar Nova Simulação
         </button>
       </div>
@@ -45,14 +49,14 @@ export default function Dashboard() {
               </div>
               <p className="mt-3 text-sm text-slate-500">{plan.edited}</p>
             </div>
-            <button className="mt-8 w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-blue-600 hover:text-blue-600" type="button">
+            <button className="mt-8 w-full rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-blue-600 hover:text-blue-600" type="button" onClick={() => navigate('/simulador')}>
               Abrir Simulação
             </button>
           </article>
         ))}
       </div>
 
-      <button aria-label="Criar Nova Simulação" className="fixed bottom-20 right-5 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-2xl text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-700 md:hidden" type="button">
+      <button aria-label="Criar Nova Simulação" className="fixed bottom-20 right-5 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-2xl text-white shadow-lg shadow-blue-600/30 transition hover:bg-blue-700 md:hidden" type="button" onClick={() => navigate('/simulador')}>
         +
       </button>
     </section>
